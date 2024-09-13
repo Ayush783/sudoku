@@ -62,7 +62,7 @@ class _SudokuBoardCellState extends State<SudokuBoardCell> {
               style: TextStyle(
                 fontWeight: cell.isEditable ? FontWeight.w500 : FontWeight.w800,
                 fontSize: lastEnteredValue == cell.value ? 22 : 18,
-                color: cell.isEditable ? Colors.black : Color(0xff454545),
+                color: cell.isEditable ? Colors.black : const Color(0xff454545),
               ),
             ),
           ),

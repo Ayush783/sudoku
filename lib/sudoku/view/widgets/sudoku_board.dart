@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sudoku/ad/widgets/sudoku_native_ad.dart';
+import 'package:sudoku/sudoku/data/model/sudoku_model.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
+import 'package:sudoku/sudoku/view/widgets/difficulty_dropdown.dart';
+import 'package:sudoku/sudoku/view/widgets/game_timer.dart';
 import 'package:sudoku/sudoku/view/widgets/sudoku_board_cell.dart';
 
 class SudokuBoard extends StatelessWidget {
@@ -9,16 +12,27 @@ class SudokuBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final board = context.watch<SudokuController>().board;
+    final board = context
+        .select<SudokuController, SudokuBoardModel?>((value) => value.board);
     return board != null
         ? Column(
             children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    DifficultyDropdown(),
+                    GameTimer(),
+                  ],
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: CustomPaint(
                   painter: SudokuBoardPainter(),
                   child: Column(
-                    children: board!.cellMatrix
+                    children: board.cellMatrix
                         .map(
                           (row) => Row(
                             children: row

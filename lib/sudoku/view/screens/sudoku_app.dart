@@ -21,10 +21,11 @@ class _SudokuAppState extends State<SudokuApp> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Sudoku'),
+          centerTitle: true,
         ),
         body: ChangeNotifierProvider(
           create: (context) => SudokuController()..generateSudoku(),
-          child: SudokuBoard(),
+          child: const SudokuBoard(),
         ),
       ),
     );

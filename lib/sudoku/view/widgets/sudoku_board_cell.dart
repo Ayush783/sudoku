@@ -57,6 +57,10 @@ class _SudokuBoardCellState extends State<SudokuBoardCell> {
           child: Center(
             child: Text(
               cell.value != 0 ? cell.value.toString() : '',
+              style: TextStyle(
+                fontWeight: cell.isEditable ? FontWeight.w500 : FontWeight.w800,
+                color: cell.isEditable ? Colors.black : Color(0xff454545),
+              ),
             ),
           ),
         ),

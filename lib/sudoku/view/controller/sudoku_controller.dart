@@ -1,13 +1,17 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:sudoku/sudoku/data/model/sudoku_model.dart';
+import 'package:sudoku/sudoku/view/controller/sudoku_difficulty.dart';
 
 class SudokuController extends ChangeNotifier {
   SudokuBoardModel? _board;
   SudokuBoardModel? get board => _board;
 
   final List<SudokuBoardModel> _boardStates = [];
+
+  bool get hasProgress => _boardStates.isNotEmpty;
 
   int _focussedRow = -1;
   int get focussedRow => _focussedRow;
@@ -21,6 +25,35 @@ class SudokuController extends ChangeNotifier {
     _focussedRow = row;
     _focussedColumn = col;
     notifyListeners();
+  }
+
+  SudokuDifficulty _currentDifficulty = SudokuDifficulty.easy;
+  SudokuDifficulty get currentDifficulty => _currentDifficulty;
+
+  set currentDifficulty(SudokuDifficulty val) {
+    _currentDifficulty = val;
+    resetAndGenerateBoard();
+    notifyListeners();
+  }
+
+  void resetAndGenerateBoard() {
+    _boardStates.clear();
+    _focussedColumn = -1;
+    _focussedRow = -1;
+    generateSudoku(difficulty: _currentDifficulty);
+  }
+
+  Timer? _gameTimer;
+  Duration _timeElapsed = Duration.zero;
+  Duration get timeElapsed => _timeElapsed;
+
+  void initiateTimer() {
+    _gameTimer?.cancel();
+    _timeElapsed = Duration.zero;
+    _gameTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _timeElapsed = _timeElapsed + const Duration(seconds: 1);
+      notifyListeners();
+    });
   }
 
   bool isSafe(List<List<int>> board, int row, int col, int num) {
@@ -82,6 +115,7 @@ class SudokuController extends ChangeNotifier {
     solveSudoku(board);
     removeNumbers(board, difficulty.value);
     _board = SudokuBoardModel.fromData(board);
+    initiateTimer();
     notifyListeners();
   }
 
@@ -103,16 +137,10 @@ class SudokuController extends ChangeNotifier {
     _board = prevState;
     notifyListeners();
   }
-}
 
-enum SudokuDifficulty {
-  easy,
-  medium,
-  hard;
-
-  int get value => switch (this) {
-        easy => 40,
-        medium => 45,
-        hard => 50,
-      };
+  @override
+  void dispose() {
+    _gameTimer?.cancel();
+    super.dispose();
+  }
 }

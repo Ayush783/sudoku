@@ -21,9 +21,13 @@ class SudokuController extends ChangeNotifier {
 
   bool get hasFocussedCell => _focussedColumn != -1 && _focussedRow != -1;
 
+  int _lastEnteredValue = 0;
+  int get lastEnteredValue => _lastEnteredValue;
+
   void focussedCell(int row, int col) {
     _focussedRow = row;
     _focussedColumn = col;
+    _lastEnteredValue = 0;
     notifyListeners();
   }
 
@@ -40,6 +44,7 @@ class SudokuController extends ChangeNotifier {
     _boardStates.clear();
     _focussedColumn = -1;
     _focussedRow = -1;
+    _lastEnteredValue = 0;
     generateSudoku(difficulty: _currentDifficulty);
   }
 
@@ -56,7 +61,42 @@ class SudokuController extends ChangeNotifier {
     });
   }
 
-  bool isSafe(List<List<int>> board, int row, int col, int num) {
+  void generateSudoku({SudokuDifficulty difficulty = SudokuDifficulty.easy}) {
+    List<List<int>> board = List.generate(9, (_) => List.generate(9, (_) => 0));
+    _solveSudoku(board);
+    _removeNumbers(board, difficulty.value);
+    _board = SudokuBoardModel.fromData(board);
+    initiateTimer();
+    notifyListeners();
+  }
+
+  void updateCell(int value) {
+    if (_board!.cellMatrix[_focussedRow][_focussedColumn].value == value) {
+      return;
+    }
+
+    _boardStates.add(_board!.copyWith());
+    _lastEnteredValue = value == 10 ? 0 : value;
+    _board =
+        _board?.update(value == 10 ? 0 : value, _focussedRow, _focussedColumn);
+    notifyListeners();
+  }
+
+  void undo() {
+    if (_boardStates.isEmpty) return;
+    _lastEnteredValue = 0;
+    final prevState = _boardStates.removeLast();
+    _board = prevState;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _gameTimer?.cancel();
+    super.dispose();
+  }
+
+  bool _isSafe(List<List<int>> board, int row, int col, int num) {
     // Check if the number is not already placed in the current row or column
     for (int x = 0; x < 9; x++) {
       if (board[row][x] == num || board[x][col] == num) {
@@ -77,14 +117,14 @@ class SudokuController extends ChangeNotifier {
     return true;
   }
 
-  bool solveSudoku(List<List<int>> board) {
+  bool _solveSudoku(List<List<int>> board) {
     for (int row = 0; row < 9; row++) {
       for (int col = 0; col < 9; col++) {
         if (board[row][col] == 0) {
           for (int num = 1; num <= 9; num++) {
-            if (isSafe(board, row, col, num)) {
+            if (_isSafe(board, row, col, num)) {
               board[row][col] = num;
-              if (solveSudoku(board)) {
+              if (_solveSudoku(board)) {
                 return true;
               }
               board[row][col] = 0;
@@ -97,7 +137,7 @@ class SudokuController extends ChangeNotifier {
     return true;
   }
 
-  void removeNumbers(List<List<int>> board, int level) {
+  void _removeNumbers(List<List<int>> board, int level) {
     Random random = Random();
     for (int i = 0; i < level; i++) {
       int row = random.nextInt(9);
@@ -108,39 +148,5 @@ class SudokuController extends ChangeNotifier {
       }
       board[row][col] = 0;
     }
-  }
-
-  void generateSudoku({SudokuDifficulty difficulty = SudokuDifficulty.easy}) {
-    List<List<int>> board = List.generate(9, (_) => List.generate(9, (_) => 0));
-    solveSudoku(board);
-    removeNumbers(board, difficulty.value);
-    _board = SudokuBoardModel.fromData(board);
-    initiateTimer();
-    notifyListeners();
-  }
-
-  void updateCell(int value) {
-    if (_board!.cellMatrix[_focussedRow][_focussedColumn].value == value) {
-      return;
-    }
-
-    _boardStates.add(_board!.copyWith());
-    _board =
-        _board?.update(value == 10 ? 0 : value, _focussedRow, _focussedColumn);
-    notifyListeners();
-  }
-
-  void undo() {
-    if (_boardStates.isEmpty) return;
-
-    final prevState = _boardStates.removeLast();
-    _board = prevState;
-    notifyListeners();
-  }
-
-  @override
-  void dispose() {
-    _gameTimer?.cancel();
-    super.dispose();
   }
 }

@@ -35,6 +35,8 @@ class _SudokuBoardCellState extends State<SudokuBoardCell> {
     final isFocussedCol = context.select<SudokuController, bool>(
         (value) => value.focussedColumn == cell.colIndex);
     final cellSize = (MediaQuery.sizeOf(context).width - 32) / 9;
+    final lastEnteredValue = context
+        .select<SudokuController, int>((value) => value.lastEnteredValue);
 
     return InkWell(
       onTap: cell.isEditable
@@ -59,6 +61,7 @@ class _SudokuBoardCellState extends State<SudokuBoardCell> {
               cell.value != 0 ? cell.value.toString() : '',
               style: TextStyle(
                 fontWeight: cell.isEditable ? FontWeight.w500 : FontWeight.w800,
+                fontSize: lastEnteredValue == cell.value ? 22 : 18,
                 color: cell.isEditable ? Colors.black : Color(0xff454545),
               ),
             ),

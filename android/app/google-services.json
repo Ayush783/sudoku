@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1023622084657",
+    "project_id": "sudoku-aayushsharma",
+    "storage_bucket": "sudoku-aayushsharma.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1023622084657:android:5d104d1aa337bf3d2efd10",
+        "android_client_info": {
+          "package_name": "aayushsharma.me.sudoku"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiLK6bjgmB90g0y-w-nrevaruCAu6ORKc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

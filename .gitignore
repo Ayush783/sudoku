@@ -1,3 +1,5 @@
+/lib/ad/service/ad_service.dart
+
 # Miscellaneous
 *.class
 *.log

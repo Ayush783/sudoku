@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_difficulty.dart';
-import 'package:sudoku/sudoku/view/widgets/sudoku_board_cell.dart';
 
 class DifficultyDropdown extends StatefulWidget {
   const DifficultyDropdown({super.key});
@@ -43,7 +42,7 @@ class _DifficultyDropdownState extends State<DifficultyDropdown> {
           );
         }
 
-        if (shouldReset && mounted) {
+        if (shouldReset && context.mounted) {
           context.read<SudokuController>().currentDifficulty = val;
         }
       },

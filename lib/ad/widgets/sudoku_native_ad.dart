@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:developer' as dev;
-import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -19,10 +16,6 @@ class SudokuNativeAdState extends State<SudokuNativeAd> {
   NativeAd? _nativeAd;
   bool _nativeAdIsLoaded = false;
   Timer? _adRefreshTimer;
-
-  final String _adUnitId = Platform.isAndroid
-      ? 'ca-app-pub-3940256099942544/2247696110'
-      : 'ca-app-pub-3940256099942544/3986624511';
 
   @override
   void initState() {
@@ -76,6 +69,5 @@ class SudokuNativeAdState extends State<SudokuNativeAd> {
             child: AdWidget(key: ValueKey(_nativeAd.hashCode), ad: _nativeAd!),
           )
         : const SizedBox.shrink();
-    ;
   }
 }

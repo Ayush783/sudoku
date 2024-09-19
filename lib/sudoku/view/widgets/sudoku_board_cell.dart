@@ -61,17 +61,22 @@ class _SudokuBoardCellState extends State<SudokuBoardCell> {
           child: Center(
             child: isPaused
                 ? Text(_generateRandomGlyph())
-                : Text(
-                    cell.value != 0 ? cell.value.toString() : '',
-                    style: TextStyle(
-                      fontWeight:
-                          cell.isEditable ? FontWeight.w500 : FontWeight.w800,
-                      fontSize: lastEnteredValue == cell.value ? 22 : 18,
-                      color: cell.isEditable
-                          ? Colors.black
-                          : const Color(0xff454545),
-                    ),
-                  ),
+                : cell.value != 0
+                    ? Text(
+                        cell.value.toString(),
+                        style: TextStyle(
+                          fontWeight: cell.isEditable
+                              ? FontWeight.w500
+                              : FontWeight.w800,
+                          fontSize: lastEnteredValue == cell.value ? 22 : 18,
+                          color: cell.isEditable
+                              ? Colors.black
+                              : const Color(0xff454545),
+                        ),
+                      )
+                    : cell.hasNotes
+                        ? _NotesGridBuilder(notes: cell.notes)
+                        : const SizedBox.shrink(),
           ),
         ),
       ),
@@ -93,5 +98,35 @@ class _SudokuBoardCellState extends State<SudokuBoardCell> {
         random.nextInt(50); // Add a small random offset for variety
 
     return String.fromCharCode(randomRange + randomOffset);
+  }
+}
+
+class _NotesGridBuilder extends StatelessWidget {
+  const _NotesGridBuilder({super.key, required this.notes});
+
+  final List<int> notes;
+
+  @override
+  Widget build(BuildContext context) {
+    final cellSize = (MediaQuery.sizeOf(context).width - 32) / 9;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 1, 1, 0),
+      child: GridView(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+        ),
+        children: notes.indexed
+            .map(
+              (e) => Text(
+                '${e.$2 != 0 ? e.$1 + 1 : ''}',
+                style: TextStyle(
+                  fontSize: (cellSize / 3) - 4,
+                  color: const Color(0xff454545),
+                ),
+              ),
+            )
+            .toList(),
+      ),
+    );
   }
 }

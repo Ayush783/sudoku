@@ -13,21 +13,25 @@ class SudokuBoardModel {
                             isEditable: false,
                             colIndex: e.$1,
                             rowIndex: row.$1,
+                            notes: List.filled(9, 0, growable: false),
                           )
                         : SudokuCellModel(
                             value: 0,
                             isEditable: true,
                             colIndex: e.$1,
                             rowIndex: row.$1,
+                            notes: List.filled(9, 0, growable: false),
                           ),
                   )
                   .toList(),
             )
             .toList();
 
-  SudokuBoardModel update(int value, int rowIndex, int colIndex) {
+  SudokuBoardModel update(int value, int rowIndex, int colIndex,
+      {bool isNote = false}) {
     cellMatrix[rowIndex][colIndex] =
-        cellMatrix[rowIndex][colIndex].copyWith(value);
+        cellMatrix[rowIndex][colIndex].copyWith(value, isNote: isNote);
+
     return SudokuBoardModel(cellMatrix: List.from(cellMatrix));
   }
 
@@ -51,20 +55,32 @@ class SudokuCellModel {
   final int rowIndex;
   final int colIndex;
   final bool isEditable;
+  final List<int> notes;
+
+  bool get hasNotes => notes.any((element) => element == 1);
+
   SudokuCellModel({
     required this.value,
     required this.rowIndex,
     required this.colIndex,
     required this.isEditable,
+    this.notes = const [],
   });
 
   SudokuCellModel copyWith(
-    int? value,
-  ) =>
-      SudokuCellModel(
-        value: value ?? this.value,
-        isEditable: isEditable,
-        rowIndex: rowIndex,
-        colIndex: colIndex,
-      );
+    int? value, {
+    bool isNote = false,
+  }) {
+    if (isNote) {
+      notes[value! - 1] = notes[value - 1] ^ 1;
+    }
+
+    return SudokuCellModel(
+      value: isNote ? 0 : value ?? this.value,
+      isEditable: isEditable,
+      rowIndex: rowIndex,
+      colIndex: colIndex,
+      notes: [...notes],
+    );
+  }
 }

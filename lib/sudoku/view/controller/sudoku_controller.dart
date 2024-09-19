@@ -24,6 +24,13 @@ class SudokuController extends ChangeNotifier {
   int _lastEnteredValue = 0;
   int get lastEnteredValue => _lastEnteredValue;
 
+  bool _noteModeOn = false;
+  bool get noteModeOn => _noteModeOn;
+  set noteModeOn(bool val) {
+    _noteModeOn = val;
+    notifyListeners();
+  }
+
   void focussedCell(int row, int col) {
     _focussedRow = row;
     _focussedColumn = col;
@@ -77,14 +84,22 @@ class SudokuController extends ChangeNotifier {
   }
 
   void updateCell(int value) {
-    if (_board!.cellMatrix[_focussedRow][_focussedColumn].value == value) {
+    if (!_noteModeOn &&
+        _board!.cellMatrix[_focussedRow][_focussedColumn].value == value) {
       return;
     }
 
     _boardStates.add(_board!.copyWith());
-    _lastEnteredValue = value == 10 ? 0 : value;
-    _board =
-        _board?.update(value == 10 ? 0 : value, _focussedRow, _focussedColumn);
+
+    _lastEnteredValue = _noteModeOn
+        ? 0
+        : value == 10
+            ? 0
+            : value;
+
+    _board = _board?.update(
+        value == 10 ? 0 : value, _focussedRow, _focussedColumn,
+        isNote: _noteModeOn);
     notifyListeners();
   }
 

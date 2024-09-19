@@ -52,9 +52,15 @@ class SudokuController extends ChangeNotifier {
   Duration _timeElapsed = Duration.zero;
   Duration get timeElapsed => _timeElapsed;
 
-  void initiateTimer() {
+  void startTimer({bool reset = false}) {
+    if (reset) _timeElapsed = Duration.zero;
+
+    if (_isPaused) {
+      _isPaused = false;
+      notifyListeners();
+    }
+
     _gameTimer?.cancel();
-    _timeElapsed = Duration.zero;
     _gameTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _timeElapsed = _timeElapsed + const Duration(seconds: 1);
       notifyListeners();
@@ -66,7 +72,7 @@ class SudokuController extends ChangeNotifier {
     _solveSudoku(board);
     _removeNumbers(board, difficulty.value);
     _board = SudokuBoardModel.fromData(board);
-    initiateTimer();
+    startTimer(reset: true);
     notifyListeners();
   }
 
@@ -148,5 +154,14 @@ class SudokuController extends ChangeNotifier {
       }
       board[row][col] = 0;
     }
+  }
+
+  bool _isPaused = false;
+  bool get isPaused => _isPaused;
+
+  void pauseTimer() {
+    _gameTimer?.cancel();
+    _isPaused = true;
+    notifyListeners();
   }
 }

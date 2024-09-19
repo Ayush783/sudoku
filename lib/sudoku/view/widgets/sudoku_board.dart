@@ -5,6 +5,7 @@ import 'package:sudoku/sudoku/data/model/sudoku_model.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 import 'package:sudoku/sudoku/view/widgets/difficulty_dropdown.dart';
 import 'package:sudoku/sudoku/view/widgets/game_timer.dart';
+import 'package:sudoku/sudoku/view/widgets/pause_button.dart';
 import 'package:sudoku/sudoku/view/widgets/sudoku_board_cell.dart';
 
 class SudokuBoard extends StatelessWidget {
@@ -20,10 +21,11 @@ class SudokuBoard extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     DifficultyDropdown(),
+                    Spacer(),
                     GameTimer(),
+                    PauseButton(),
                   ],
                 ),
               ),

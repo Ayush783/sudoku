@@ -10,6 +10,7 @@ import 'package:sudoku/sudoku/view/controller/sudoku_difficulty.dart';
 class SudokuController extends ChangeNotifier {
   static const _logName = 'SudokuController';
   SudokuBoardModel? _board;
+  SudokuBoardModel? _solvedBoard;
   SudokuBoardModel? get board => _board;
 
   final List<SudokuBoardModel> _boardStates = [];
@@ -81,10 +82,10 @@ class SudokuController extends ChangeNotifier {
   }
 
   void generateSudoku({SudokuDifficulty difficulty = SudokuDifficulty.easy}) {
-    List<List<int>> board = List.generate(9, (_) => List.generate(9, (_) => 0));
-    _solveSudoku(board);
-    _removeNumbers(board, difficulty.value);
-    _board = SudokuBoardModel.fromData(board);
+    final randomBoard = _generateRandomBoard();
+    _solvedBoard = SudokuBoardModel.fromData(randomBoard);
+    _removeNumbers(randomBoard, difficulty.value);
+    _board = SudokuBoardModel.fromData(randomBoard);
     startTimer(reset: true);
     _hintTypeCounter = {HintType.cell: 3, HintType.row: 2, HintType.block: 1};
     notifyListeners();
@@ -142,19 +143,7 @@ class SudokuController extends ChangeNotifier {
   }
 
   void _solveFor(int row, int col) {
-    for (int i = 1; i <= 9; i++) {
-      final isSafe = _isSafe(
-          _board!.cellMatrix
-              .map((e) => e.map((e) => e.value).toList())
-              .toList(),
-          row,
-          col,
-          i);
-      if (isSafe) {
-        _board = _board!.update(i, row, col);
-        break;
-      }
-    }
+    _board = _board!.update(_solvedBoard!.cellMatrix[row][col].value, row, col);
   }
 
   // Reveal a single random cell
@@ -267,24 +256,45 @@ class SudokuController extends ChangeNotifier {
     return true;
   }
 
-  bool _solveSudoku(List<List<int>> board) {
-    for (int row = 0; row < 9; row++) {
-      for (int col = 0; col < 9; col++) {
-        if (board[row][col] == 0) {
-          for (int num = 1; num <= 9; num++) {
-            if (_isSafe(board, row, col, num)) {
-              board[row][col] = num;
-              if (_solveSudoku(board)) {
-                return true;
-              }
-              board[row][col] = 0;
-            }
-          }
-          return false;
-        }
+  List<List<int>> _generateRandomBoard() {
+    List<int> baseRange = [0, 1, 2];
+
+    List<int> rows = [];
+    for (var g in _shuffleList(baseRange)) {
+      for (var r in _shuffleList(baseRange)) {
+        rows.add(g * 3 + r);
       }
     }
-    return true;
+
+    List<int> cols = [];
+    for (var g in _shuffleList(baseRange)) {
+      for (var c in _shuffleList(baseRange)) {
+        cols.add(g * 3 + c);
+      }
+    }
+
+    List<int> nums = _shuffleList([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+    List<List<int>> board = [];
+
+    for (var r in rows) {
+      List<int> thisRow = [];
+      for (var c in cols) {
+        thisRow.add(nums[_pattern(r, c)]);
+      }
+      board.add(thisRow);
+    }
+
+    return board;
+  }
+
+  int _pattern(int r, int c) {
+    return (3 * (r % 3) + r ~/ 3 + c) % 9;
+  }
+
+  List<int> _shuffleList(List<int> list) {
+    list.shuffle();
+    return List.from(list);
   }
 
   void _removeNumbers(List<List<int>> board, int level) {

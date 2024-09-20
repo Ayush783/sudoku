@@ -34,6 +34,20 @@ class _SudokuBoardCellState extends State<SudokuBoardCell> {
         (value) => value.focussedRow == cell.rowIndex);
     final isFocussedCol = context.select<SudokuController, bool>(
         (value) => value.focussedColumn == cell.colIndex);
+
+    bool isFocussedBlock = context.select<SudokuController, bool>((value) {
+      if (value.focussedRow == -1 || value.focussedColumn == -1) {
+        return false;
+      }
+
+      final focussedBlockStartRow = 3 * (value.focussedRow ~/ 3);
+      final focussedBlockStartColumn = 3 * (value.focussedColumn ~/ 3);
+      return (focussedBlockStartRow <= cell.rowIndex &&
+              cell.rowIndex < focussedBlockStartRow + 3) &&
+          (focussedBlockStartColumn <= cell.colIndex &&
+              cell.colIndex < focussedBlockStartColumn + 3);
+    });
+
     final cellSize = (MediaQuery.sizeOf(context).width - 32) / 9;
     final lastEnteredValue = context
         .select<SudokuController, int>((value) => value.lastEnteredValue);
@@ -52,9 +66,17 @@ class _SudokuBoardCellState extends State<SudokuBoardCell> {
               }
             }
           : null,
-      child: ColoredBox(
-        color: Color.fromARGB(
-            50 + (isFocussedRow ? 75 : 0) + (isFocussedCol ? 75 : 0), r, g, b),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color.fromARGB(
+              50 +
+                  (isFocussedBlock ? 75 : 0) +
+                  (isFocussedRow && !isFocussedBlock ? 75 : 0) +
+                  (isFocussedCol && !isFocussedBlock ? 75 : 0),
+              r,
+              g,
+              b),
+        ),
         child: SizedBox(
           width: cellSize,
           height: cellSize,

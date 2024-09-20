@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sudoku/ad/service/ad_service.dart';
 import 'package:sudoku/sudoku/view/controller/hint_type.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 
@@ -64,7 +67,15 @@ class _HintButton extends StatelessWidget {
                         if (hintTypeCounter[e]! > 0) {
                           Navigator.pop(context, e);
                         } else {
-                          // TODO: show rewarded ad
+                          AdService.displayRewardedInterstitialAd(
+                            (ad) {
+                              ad.show(
+                                onUserEarnedReward: (ad, reward) {
+                                  Navigator.pop(context, e);
+                                },
+                              );
+                            },
+                          );
                         }
                       },
                       style: FilledButton.styleFrom(

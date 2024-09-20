@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
 import 'package:sudoku/sudoku/data/model/sudoku_model.dart';
+import 'package:sudoku/sudoku/view/controller/hint_type.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_difficulty.dart';
 
 class SudokuController extends ChangeNotifier {
+  static const _logName = 'SudokuController';
   SudokuBoardModel? _board;
   SudokuBoardModel? get board => _board;
 
@@ -30,6 +33,9 @@ class SudokuController extends ChangeNotifier {
     _noteModeOn = val;
     notifyListeners();
   }
+
+  late Map<HintType, int> _hintTypeCounter;
+  Map<HintType, int> get hintTypeCounter => _hintTypeCounter;
 
   void focussedCell(int row, int col) {
     _focussedRow = row;
@@ -80,6 +86,7 @@ class SudokuController extends ChangeNotifier {
     _removeNumbers(board, difficulty.value);
     _board = SudokuBoardModel.fromData(board);
     startTimer(reset: true);
+    _hintTypeCounter = {HintType.cell: 3, HintType.row: 2, HintType.block: 1};
     notifyListeners();
   }
 
@@ -111,6 +118,128 @@ class SudokuController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void takeHint(HintType type) {
+    _hintTypeCounter[type] = _hintTypeCounter[type]! - 1;
+    switch (type) {
+      case HintType.cell:
+        _fillSingleCell();
+        break;
+      case HintType.row:
+        _fillRandomIncompleteRow();
+        break;
+      case HintType.block:
+        _fillRandomIncompleteBlock();
+        break;
+    }
+
+    _boardStates.clear();
+    _lastEnteredValue = 0;
+    _focussedColumn = -1;
+    _focussedRow = -1;
+    _noteModeOn = false;
+
+    notifyListeners();
+  }
+
+  void _solveFor(int row, int col) {
+    for (int i = 1; i <= 9; i++) {
+      final isSafe = _isSafe(
+          _board!.cellMatrix
+              .map((e) => e.map((e) => e.value).toList())
+              .toList(),
+          row,
+          col,
+          i);
+      if (isSafe) {
+        _board = _board!.update(i, row, col);
+        break;
+      }
+    }
+  }
+
+  // Reveal a single random cell
+  void _fillSingleCell() {
+    List<List<int>> emptyCells = [];
+
+    for (int i = 0; i < 9; i++) {
+      for (int j = 0; j < 9; j++) {
+        if (_board!.cellMatrix[i][j].value == 0) {
+          emptyCells.add([i, j]);
+        }
+      }
+    }
+
+    if (emptyCells.isNotEmpty) {
+      var randomCell = emptyCells[Random().nextInt(emptyCells.length)];
+      int row = randomCell[0];
+      int col = randomCell[1];
+      _solveFor(row, col);
+    } else {
+      dev.log("No empty cells to reveal", name: _logName);
+    }
+  }
+
+// Reveal a random incomplete row
+  void _fillRandomIncompleteRow() {
+    List<int> incompleteRows = [];
+
+    for (int i = 0; i < 9; i++) {
+      final currRowValues = _board!.cellMatrix[i].map((e) => e.value);
+      if (currRowValues.contains(0)) {
+        incompleteRows.add(i);
+      }
+    }
+
+    if (incompleteRows.isNotEmpty) {
+      int randomRow = incompleteRows[Random().nextInt(incompleteRows.length)];
+      for (int j = 0; j < 9; j++) {
+        if (_board!.cellMatrix[randomRow][j].value == 0) {
+          _solveFor(randomRow, j);
+        }
+      }
+    } else {
+      dev.log("No incomplete rows to reveal.", name: _logName);
+    }
+  }
+
+// Reveal a random incomplete 3x3 block
+  void _fillRandomIncompleteBlock() {
+    List<List<int>> incompleteBlocks = [];
+
+    for (int blockRow = 0; blockRow < 3; blockRow++) {
+      for (int blockCol = 0; blockCol < 3; blockCol++) {
+        bool hasEmptyCell = false;
+        for (int i = blockRow * 3; i < (blockRow + 1) * 3; i++) {
+          for (int j = blockCol * 3; j < (blockCol + 1) * 3; j++) {
+            if (_board!.cellMatrix[i][j].value == 0) {
+              hasEmptyCell = true;
+            }
+          }
+        }
+        if (hasEmptyCell) {
+          incompleteBlocks.add([blockRow, blockCol]);
+        }
+      }
+    }
+
+    if (incompleteBlocks.isNotEmpty) {
+      var randomBlock =
+          incompleteBlocks[Random().nextInt(incompleteBlocks.length)];
+      int blockRow = randomBlock[0];
+      int blockCol = randomBlock[1];
+
+      for (int i = blockRow * 3; i < (blockRow + 1) * 3; i++) {
+        for (int j = blockCol * 3; j < (blockCol + 1) * 3; j++) {
+          if (_board!.cellMatrix[i][j].value == 0) {
+            _solveFor(i, j);
+          }
+        }
+      }
+    } else {
+      dev.log("No incomplete blocks to reveal.", name: _logName);
+    }
+  }
+
   @override
   void dispose() {
     _gameTimer?.cancel();
@@ -125,7 +254,7 @@ class SudokuController extends ChangeNotifier {
       }
     }
 
-    // Check if the number is not already placed in the 3x3 sub-grid
+    // Check if the number is not already placed in the 3x3 sub-board
     int startRow = 3 * (row ~/ 3), startCol = 3 * (col ~/ 3);
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {

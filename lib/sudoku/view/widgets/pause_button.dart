@@ -29,7 +29,7 @@ class PauseButton extends StatelessWidget {
         }
       },
       padding: const EdgeInsets.all(4),
-      icon: const Icon(Icons.pause),
+      icon: const Icon(Icons.pause_circle_outline_rounded),
       style: IconButton.styleFrom(
         minimumSize: Size.zero,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,

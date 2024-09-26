@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 import 'package:sudoku/sudoku/data/model/sudoku_model.dart';
 import 'package:sudoku/sudoku/view/screens/app_theme.dart';
+
+import 'package:sudoku/sudoku/view/widgets/sudoku_app_bar.dart';
 import 'package:sudoku/sudoku/view/widgets/sudoku_board.dart';
 
 class SudokuApp extends StatefulWidget {
@@ -16,16 +18,13 @@ class _SudokuAppState extends State<SudokuApp> {
   SudokuBoardModel? model;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: AppTheme.lightTheme,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Sudoku'),
-          centerTitle: true,
-        ),
-        body: ChangeNotifierProvider(
-          create: (context) => SudokuController()..generateSudoku(),
-          child: const SudokuBoard(),
+    return ChangeNotifierProvider(
+      create: (context) => SudokuController()..generateSudoku(),
+      child: MaterialApp(
+        theme: AppTheme.lightTheme,
+        home: const Scaffold(
+          appBar: SudokuAppBar(),
+          body: SudokuBoard(),
         ),
       ),
     );

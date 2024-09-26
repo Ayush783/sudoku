@@ -21,11 +21,6 @@ class _GameTimerState extends State<GameTimer> {
     // Extract hours, minutes, and seconds from the duration
     String twoDigits(int n) => n.toString().padLeft(2, '0');
 
-    String prefix = duration.inMinutes < 1
-        ? 's'
-        : duration.inHours < 1
-            ? 'm'
-            : 'h';
     String hours =
         duration.inHours < 1 ? '' : '${twoDigits(duration.inHours)}:';
     String minutes = duration.inMinutes < 1
@@ -34,6 +29,6 @@ class _GameTimerState extends State<GameTimer> {
     String seconds = twoDigits(duration.inSeconds.remainder(60));
 
     // Return formatted string
-    return "$hours$minutes$seconds$prefix";
+    return "$hours$minutes$seconds";
   }
 }

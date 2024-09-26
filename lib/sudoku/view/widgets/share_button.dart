@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sudoku/share/controller/share_controller.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 
 class ShareButton extends StatelessWidget {
@@ -14,19 +15,8 @@ class ShareButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () {
-          final board = context.read<SudokuController>().board;
-          final boardAsString = board!.cellMatrix
-              .map(
-                (e) => e.map(
-                  (e) => e.value,
-                ),
-              )
-              .map(
-                (element) => element.join(''),
-              )
-              .join('');
-          final code = utf8.encode(boardAsString);
-          log(base64Url.encode(code));
+          ShareController.shareIncompleteBoard(
+              context.read<SudokuController>().board!);
         },
         icon: const Icon(Icons.share_outlined));
   }
@@ -53,3 +43,5 @@ class ShareButton extends StatelessWidget {
 // 904568003
 
 // 530410679000007050709300401090006030680150940300004067000000004123040586904568003
+
+// NjAwMDIxMzc0NTIxNzM0OTAwNzAwNjA4MDAwNDUwMDAwNjEwMTYyMDUzNzg5MDAwMTAyMDAwMDE1OTA3MDA2MDAwMjA2MDA1MDAwMDA1NDA3

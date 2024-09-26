@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sudoku/share/controller/share_controller.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 
 class BoardCompletedCard extends StatelessWidget {
@@ -44,7 +45,12 @@ class BoardCompletedCard extends StatelessWidget {
               ),
             ),
             FilledButton(
-              onPressed: () {},
+              onPressed: () {
+                ShareController.shareCompleteBoard(
+                    context.read<SudokuController>().board!,
+                    _formatDuration(
+                        context.read<SudokuController>().timeElapsed));
+              },
               child: const Text('Share'),
             ),
           ],

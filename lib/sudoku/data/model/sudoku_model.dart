@@ -11,6 +11,7 @@ class SudokuBoardModel {
                         ? SudokuCellModel(
                             value: e.$2,
                             isEditable: false,
+                            isPlacedCorrectly: true,
                             colIndex: e.$1,
                             rowIndex: row.$1,
                             notes: List.filled(9, 0, growable: false),
@@ -27,10 +28,18 @@ class SudokuBoardModel {
             )
             .toList();
 
+  /// Returns true if every cell is filled
+  bool get isFilled => cellMatrix
+      .every((element) => element.every((element) => element.value != 0));
+
+  /// Returns true if every cell is filled and placed correctly
+  bool get isCompleted => cellMatrix.every((element) => element
+      .every((element) => element.value != 0 && element.isPlacedCorrectly));
+
   SudokuBoardModel update(int value, int rowIndex, int colIndex,
-      {bool isNote = false}) {
-    cellMatrix[rowIndex][colIndex] =
-        cellMatrix[rowIndex][colIndex].copyWith(value, isNote: isNote);
+      {bool isNote = false, bool? isPlacedCorrectly}) {
+    cellMatrix[rowIndex][colIndex] = cellMatrix[rowIndex][colIndex]
+        .copyWith(value, isNote: isNote, isPlacedCorrectly: isPlacedCorrectly);
 
     return SudokuBoardModel(cellMatrix: List.from(cellMatrix));
   }
@@ -56,6 +65,7 @@ class SudokuCellModel {
   final int colIndex;
   final bool isEditable;
   final List<int> notes;
+  final bool isPlacedCorrectly;
 
   bool get hasNotes => notes.any((element) => element == 1);
 
@@ -65,11 +75,13 @@ class SudokuCellModel {
     required this.colIndex,
     required this.isEditable,
     this.notes = const [],
+    this.isPlacedCorrectly = true,
   });
 
   SudokuCellModel copyWith(
     int? value, {
     bool isNote = false,
+    bool? isPlacedCorrectly,
   }) {
     if (isNote) {
       notes[value! - 1] = notes[value - 1] ^ 1;
@@ -81,6 +93,7 @@ class SudokuCellModel {
       rowIndex: rowIndex,
       colIndex: colIndex,
       notes: [...notes],
+      isPlacedCorrectly: isPlacedCorrectly ?? this.isPlacedCorrectly,
     );
   }
 }

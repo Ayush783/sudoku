@@ -54,11 +54,15 @@ class SudokuController extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool _isBoardCompleted = false;
+  bool get isBoardCompleted => _isBoardCompleted;
+
   void resetAndGenerateBoard() {
     _boardStates.clear();
     _focussedColumn = -1;
     _focussedRow = -1;
     _lastEnteredValue = 0;
+    _isBoardCompleted = false;
     generateSudoku(difficulty: _currentDifficulty);
   }
 
@@ -108,6 +112,14 @@ class SudokuController extends ChangeNotifier {
     _board = _board?.update(
         value == 10 ? 0 : value, _focussedRow, _focussedColumn,
         isNote: _noteModeOn);
+
+    if (_board!.isFilled) {
+      verifyBoard();
+      if (_board!.isCompleted) {
+        _gameCompleted();
+      }
+    }
+
     notifyListeners();
   }
 
@@ -138,6 +150,24 @@ class SudokuController extends ChangeNotifier {
     _focussedColumn = -1;
     _focussedRow = -1;
     _noteModeOn = false;
+
+    notifyListeners();
+  }
+
+  void verifyBoard() {
+    for (var row in _board!.cellMatrix) {
+      for (var cell in row) {
+        if (cell.value == 0 || !cell.isEditable) continue;
+
+        if (!_isSafe(cell.rowIndex, cell.colIndex)) {
+          _board = _board!.update(cell.value, cell.rowIndex, cell.colIndex,
+              isPlacedCorrectly: false);
+        } else {
+          _board = _board!.update(cell.value, cell.rowIndex, cell.colIndex,
+              isPlacedCorrectly: true);
+        }
+      }
+    }
 
     notifyListeners();
   }
@@ -235,10 +265,14 @@ class SudokuController extends ChangeNotifier {
     super.dispose();
   }
 
-  bool _isSafe(List<List<int>> board, int row, int col, int num) {
+  bool _isSafe(int row, int col) {
+    final board =
+        _board!.cellMatrix.map((e) => e.map((e) => e.value).toList()).toList();
+    final num = board[row][col];
     // Check if the number is not already placed in the current row or column
     for (int x = 0; x < 9; x++) {
-      if (board[row][x] == num || board[x][col] == num) {
+      if ((board[row][x] == num && x != col) ||
+          (board[x][col] == num && x != row)) {
         return false;
       }
     }
@@ -247,7 +281,9 @@ class SudokuController extends ChangeNotifier {
     int startRow = 3 * (row ~/ 3), startCol = 3 * (col ~/ 3);
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
-        if (board[i + startRow][j + startCol] == num) {
+        if (board[i + startRow][j + startCol] == num &&
+            i + startRow != row &&
+            j + startCol != col) {
           return false;
         }
       }
@@ -317,5 +353,10 @@ class SudokuController extends ChangeNotifier {
     _gameTimer?.cancel();
     _isPaused = true;
     notifyListeners();
+  }
+
+  void _gameCompleted() {
+    _isBoardCompleted = true;
+    _gameTimer?.cancel();
   }
 }

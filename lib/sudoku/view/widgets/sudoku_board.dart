@@ -4,6 +4,7 @@ import 'package:sudoku/ad/widgets/sudoku_native_ad.dart';
 import 'package:sudoku/sudoku/data/model/sudoku_model.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 import 'package:sudoku/sudoku/view/painter/sudoku_board_painter.dart';
+import 'package:sudoku/sudoku/view/widgets/board_completed_card.dart';
 import 'package:sudoku/sudoku/view/widgets/difficulty_dropdown.dart';
 import 'package:sudoku/sudoku/view/widgets/game_timer.dart';
 import 'package:sudoku/sudoku/view/widgets/pause_button.dart';
@@ -17,6 +18,13 @@ class SudokuBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     final board = context
         .select<SudokuController, SudokuBoardModel?>((value) => value.board);
+    final isBoardCompleted = context
+        .select<SudokuController, bool>((value) => value.isBoardCompleted);
+
+    if (isBoardCompleted) {
+      return const BoardCompletedCard();
+    }
+
     return board != null
         ? Column(
             children: [
@@ -27,7 +35,6 @@ class SudokuBoard extends StatelessWidget {
                     DifficultyDropdown(),
                     Spacer(),
                     GameTimer(),
-                    PauseButton(),
                   ],
                 ),
               ),

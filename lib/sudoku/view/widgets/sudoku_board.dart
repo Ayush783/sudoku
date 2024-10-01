@@ -8,7 +8,6 @@ import 'package:sudoku/sudoku/view/widgets/board_completed_card.dart';
 import 'package:sudoku/sudoku/view/widgets/difficulty_dropdown.dart';
 import 'package:sudoku/sudoku/view/widgets/game_timer.dart';
 import 'package:sudoku/sudoku/view/widgets/number_input_button.dart';
-import 'package:sudoku/sudoku/view/widgets/pause_button.dart';
 import 'package:sudoku/sudoku/view/widgets/sudoku_board_cell.dart';
 import 'package:sudoku/sudoku/view/widgets/tool_bar.dart';
 
@@ -66,7 +65,7 @@ class SudokuBoard extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -77,7 +76,7 @@ class SudokuBoard extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               const ToolBar(),
               const Spacer(),
               const SudokuNativeAd(),

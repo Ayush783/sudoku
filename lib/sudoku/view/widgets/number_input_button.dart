@@ -44,8 +44,8 @@ class _NumberInputButtonState extends State<NumberInputButton> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
             // color: Color.fromARGB(100, r, g, b),
-            color: Color(0xfff1f1f1),
-            boxShadow: [
+            color: const Color(0xfff1f1f1),
+            boxShadow: const [
               // BoxShadow(
               //   blurRadius: 0,
               //   offset: Offset(1, 1),
@@ -55,7 +55,7 @@ class _NumberInputButtonState extends State<NumberInputButton> {
         child: Center(
           child: Text(
             '${widget.value}',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 24,
             ),
           ),

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,9 +41,7 @@ class ToolBar extends StatelessWidget {
 }
 
 class _HintButton extends StatelessWidget {
-  const _HintButton({
-    super.key,
-  });
+  const _HintButton();
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +78,7 @@ class _HintButton extends StatelessWidget {
 }
 
 class _NoteModeToggleButton extends StatelessWidget {
-  const _NoteModeToggleButton({
-    super.key,
-  });
+  const _NoteModeToggleButton();
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +112,6 @@ class _NoteModeToggleButton extends StatelessWidget {
 
 class _HintTypeButton extends StatefulWidget {
   const _HintTypeButton({
-    super.key,
     required this.hintTypeCounter,
     required this.type,
   });
@@ -177,7 +171,7 @@ class __HintTypeButtonState extends State<_HintTypeButton> {
           }),
           const SizedBox(width: 4),
           isLoadingAd
-              ? SizedBox(
+              ? const SizedBox(
                   height: 10,
                   width: 10,
                   child: CircularProgressIndicator(

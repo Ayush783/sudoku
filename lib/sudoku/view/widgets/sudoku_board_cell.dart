@@ -126,7 +126,7 @@ class _SudokuBoardCellState extends State<SudokuBoardCell> {
 }
 
 class _NotesGridBuilder extends StatelessWidget {
-  const _NotesGridBuilder({super.key, required this.notes});
+  const _NotesGridBuilder({required this.notes});
 
   final List<int> notes;
 

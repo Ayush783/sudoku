@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sudoku/gen/assets.gen.dart';
 import 'package:sudoku/share/controller/share_controller.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 
@@ -18,7 +19,7 @@ class ShareButton extends StatelessWidget {
           ShareController.shareIncompleteBoard(
               context.read<SudokuController>().board!);
         },
-        icon: const Icon(Icons.share_outlined));
+        icon: Assets.icons.whatsapp.image());
   }
 }
 

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sudoku/ad/service/ad_service.dart';
+import 'package:sudoku/gen/assets.gen.dart';
 import 'package:sudoku/sudoku/view/controller/hint_type.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 
@@ -14,25 +15,25 @@ class ToolBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          ElevatedButton(
+          IconButton(
             onPressed: () {
               final controller = context.read<SudokuController>();
               if (!controller.hasFocussedCell) return;
               controller.updateCell(0);
             },
-            child: const Icon(Icons.backspace_outlined),
+            icon: Assets.icons.backspace.image(),
           ),
           const _NoteModeToggleButton(),
           const _HintButton(),
-          ElevatedButton(
+          IconButton(
             onPressed: () {
               context.read<SudokuController>().undo();
             },
-            child: const Icon(Icons.undo_outlined),
+            icon: Assets.icons.undo.image(),
           ),
         ],
       ),
@@ -47,7 +48,7 @@ class _HintButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return IconButton(
       onPressed: () async {
         final hintTypeCounter =
             context.read<SudokuController>().hintTypeCounter;
@@ -112,9 +113,7 @@ class _HintButton extends StatelessWidget {
           context.read<SudokuController>().takeHint(hintType);
         }
       },
-      child: const Icon(
-        Icons.lightbulb_outline_rounded,
-      ),
+      icon: Assets.icons.lightBulb.image(),
     );
   }
 }
@@ -128,22 +127,23 @@ class _NoteModeToggleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isNoteModeOn =
         context.select<SudokuController, bool>((value) => value.noteModeOn);
-    return ElevatedButton(
+    return IconButton(
       onPressed: () {
         final val = context.read<SudokuController>().noteModeOn;
         context.read<SudokuController>().noteModeOn = !val;
       },
-      child: Stack(
+      icon: Stack(
         clipBehavior: Clip.none,
         children: [
-          const Icon(Icons.edit_outlined),
+          Assets.icons.edit.image(),
           Positioned(
-            bottom: 1,
-            left: 12,
+            bottom: 2,
+            left: 22,
             child: Text(
               isNoteModeOn ? 'ON' : 'OFF',
               style: const TextStyle(
-                fontSize: 8,
+                fontSize: 10,
+                fontWeight: FontWeight.w300,
               ),
             ),
           ),

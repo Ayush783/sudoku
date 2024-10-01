@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static ThemeData get lightTheme => ThemeData(
-        fontFamily: 'Poppins',
+        fontFamily: 'Londrina',
         textTheme: const TextTheme(
           bodyLarge: TextStyle(
             fontSize: 22,

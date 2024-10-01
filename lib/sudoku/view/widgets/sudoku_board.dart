@@ -7,6 +7,7 @@ import 'package:sudoku/sudoku/view/painter/sudoku_board_painter.dart';
 import 'package:sudoku/sudoku/view/widgets/board_completed_card.dart';
 import 'package:sudoku/sudoku/view/widgets/difficulty_dropdown.dart';
 import 'package:sudoku/sudoku/view/widgets/game_timer.dart';
+import 'package:sudoku/sudoku/view/widgets/number_input_button.dart';
 import 'package:sudoku/sudoku/view/widgets/pause_button.dart';
 import 'package:sudoku/sudoku/view/widgets/sudoku_board_cell.dart';
 import 'package:sudoku/sudoku/view/widgets/tool_bar.dart';
@@ -57,35 +58,26 @@ class SudokuBoard extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Wrap(
-                  alignment: WrapAlignment.center,
-                  runSpacing: 12,
-                  spacing: 0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: List.generate(
-                    9,
-                    (index) => ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 20,
-                          horizontal: 12,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        minimumSize: Size.zero,
-                      ),
-                      onPressed: () {
-                        final controller = context.read<SudokuController>();
-
-                        if (!controller.hasFocussedCell) return;
-
-                        controller.updateCell(index + 1);
-                      },
-                      child: Text('${index + 1}'),
-                    ),
+                    5,
+                    (index) => NumberInputButton(value: index + 1),
                   ),
                 ),
               ),
+              SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: List.generate(
+                    4,
+                    (index) => NumberInputButton(value: index + 6),
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
               const ToolBar(),
               const Spacer(),
               const SudokuNativeAd(),

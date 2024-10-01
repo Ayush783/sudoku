@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sudoku/gen/assets.gen.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 
 class PauseButton extends StatelessWidget {
@@ -29,7 +30,7 @@ class PauseButton extends StatelessWidget {
         }
       },
       padding: const EdgeInsets.all(4),
-      icon: const Icon(Icons.pause_circle_outline_rounded),
+      icon: Assets.icons.pause.image(),
       style: IconButton.styleFrom(
         minimumSize: Size.zero,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,

@@ -63,46 +63,8 @@ class _HintButton extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: HintType.values
                   .map(
-                    (e) => FilledButton(
-                      onPressed: () {
-                        if (hintTypeCounter[e]! > 0) {
-                          Navigator.pop(context, e);
-                        } else {
-                          AdService.displayRewardedInterstitialAd(
-                            (ad) {
-                              ad.show(
-                                onUserEarnedReward: (ad, reward) {
-                                  Navigator.pop(context, e);
-                                },
-                              );
-                            },
-                          );
-                        }
-                      },
-                      style: FilledButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(switch (e) {
-                            HintType.cell => 'Reveal a single cell',
-                            HintType.row => 'Reveal a single row',
-                            HintType.block => 'Reveal a single block',
-                          }),
-                          const SizedBox(width: 4),
-                          Badge(
-                            label: Text(
-                              hintTypeCounter[e]! > 0
-                                  ? hintTypeCounter[e].toString()
-                                  : 'AD',
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                    (e) => _HintTypeButton(
+                        hintTypeCounter: hintTypeCounter, type: e),
                   )
                   .toList(),
             ),
@@ -147,6 +109,88 @@ class _NoteModeToggleButton extends StatelessWidget {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HintTypeButton extends StatefulWidget {
+  const _HintTypeButton({
+    super.key,
+    required this.hintTypeCounter,
+    required this.type,
+  });
+
+  final Map<HintType, int> hintTypeCounter;
+  final HintType type;
+
+  @override
+  State<_HintTypeButton> createState() => __HintTypeButtonState();
+}
+
+class __HintTypeButtonState extends State<_HintTypeButton> {
+  late bool isLoadingAd;
+  @override
+  void initState() {
+    isLoadingAd = false;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton(
+      onPressed: () async {
+        if (widget.hintTypeCounter[widget.type]! > 0) {
+          Navigator.pop(context, widget.type);
+        } else {
+          setState(() {
+            isLoadingAd = true;
+          });
+          final adLoadSuccess = await AdService.displayRewardedInterstitialAd(
+            (ad) {
+              ad.show(
+                onUserEarnedReward: (ad, reward) {
+                  Navigator.pop(context, widget.type);
+                },
+              );
+            },
+          );
+          setState(() {
+            isLoadingAd = false;
+          });
+          if (adLoadSuccess) {}
+        }
+      },
+      style: FilledButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(switch (widget.type) {
+            HintType.cell => 'Reveal a single cell',
+            HintType.row => 'Reveal a single row',
+            HintType.block => 'Reveal a single block',
+          }),
+          const SizedBox(width: 4),
+          isLoadingAd
+              ? SizedBox(
+                  height: 10,
+                  width: 10,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 0.75,
+                  ))
+              : Badge(
+                  label: Text(
+                    widget.hintTypeCounter[widget.type]! > 0
+                        ? widget.hintTypeCounter[widget.type].toString()
+                        : 'AD',
+                  ),
+                )
         ],
       ),
     );

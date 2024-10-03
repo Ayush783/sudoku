@@ -47,7 +47,7 @@ class BoardCompletedCard extends StatelessWidget {
             FilledButton(
               onPressed: () {
                 ShareController.shareCompleteBoard(
-                    context.read<SudokuController>().board!,
+                    context.read<SudokuController>().board!.id,
                     _formatDuration(
                         context.read<SudokuController>().timeElapsed));
               },

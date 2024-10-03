@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
+import 'package:sudoku/analytics/analytics.dart';
 import 'package:sudoku/sudoku/data/model/sudoku_model.dart';
 import 'package:sudoku/sudoku/view/controller/hint_type.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_difficulty.dart';
@@ -92,6 +93,11 @@ class SudokuController extends ChangeNotifier {
     _board = SudokuBoardModel.fromData(randomBoard);
     startTimer(reset: true);
     _hintTypeCounter = {HintType.cell: 3, HintType.row: 2, HintType.block: 1};
+
+    Analytics.instance.logEvent(AnalyticEvent.NEW_GAME, properties: {
+      'boardID': _board!.id,
+    });
+
     notifyListeners();
   }
 
@@ -357,6 +363,9 @@ class SudokuController extends ChangeNotifier {
 
   void _gameCompleted() {
     _isBoardCompleted = true;
+    Analytics.instance.logEvent(AnalyticEvent.COMPLETED, properties: {
+      'boardID': _board!.id,
+    });
     _gameTimer?.cancel();
   }
 }

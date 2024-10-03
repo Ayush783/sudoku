@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sudoku/analytics/analytics.dart';
 import 'package:sudoku/gen/assets.gen.dart';
 import 'package:sudoku/share/controller/share_controller.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
@@ -14,8 +14,10 @@ class ShareButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () {
-          ShareController.shareIncompleteBoard(
-              context.read<SudokuController>().board!);
+          final boardID = context.read<SudokuController>().board!.id;
+          Analytics.instance
+              .logEvent(AnalyticEvent.SHARE, properties: {'boardID': boardID});
+          ShareController.shareIncompleteBoard(boardID);
         },
         icon: Assets.icons.whatsapp.image());
   }

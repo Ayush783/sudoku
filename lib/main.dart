@@ -3,6 +3,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:sudoku/analytics/analytics.dart';
 import 'package:sudoku/sudoku/view/screens/sudoku_app.dart';
 
 void main() async {
@@ -19,6 +20,8 @@ void main() async {
   };
 
   MobileAds.instance.initialize();
+
+  await Analytics.instance.setDefaults();
 
   runApp(const SudokuApp());
 }

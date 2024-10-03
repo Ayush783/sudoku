@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sudoku/analytics/analytics.dart';
 import 'package:sudoku/gen/assets.gen.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 
@@ -10,7 +11,12 @@ class PauseButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () async {
-        context.read<SudokuController>().pauseTimer();
+        final sudokuController = context.read<SudokuController>();
+        Analytics.instance.logEvent(AnalyticEvent.PAUSED, properties: {
+          'duration': sudokuController.timeElapsed.toString(),
+          'boardID': sudokuController.board!.id.toString(),
+        });
+        sudokuController.pauseTimer();
         await showDialog(
           context: context,
           builder: (context) => AlertDialog(

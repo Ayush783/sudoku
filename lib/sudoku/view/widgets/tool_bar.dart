@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sudoku/ad/service/ad_service.dart';
+import 'package:sudoku/analytics/analytics.dart';
 import 'package:sudoku/gen/assets.gen.dart';
 import 'package:sudoku/sudoku/view/controller/hint_type.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
@@ -30,6 +30,7 @@ class ToolBar extends StatelessWidget {
           const _HintButton(),
           IconButton(
             onPressed: () {
+              Analytics.instance.logEvent(AnalyticEvent.UNDO);
               context.read<SudokuController>().undo();
             },
             icon: Assets.icons.undo.image(),
@@ -88,6 +89,9 @@ class _NoteModeToggleButton extends StatelessWidget {
       onPressed: () {
         final val = context.read<SudokuController>().noteModeOn;
         context.read<SudokuController>().noteModeOn = !val;
+        if (val) {
+          Analytics.instance.logEvent(AnalyticEvent.USING_NOTES);
+        }
       },
       icon: Stack(
         clipBehavior: Clip.none,
@@ -136,6 +140,9 @@ class __HintTypeButtonState extends State<_HintTypeButton> {
     return FilledButton(
       onPressed: () async {
         if (widget.hintTypeCounter[widget.type]! > 0) {
+          Analytics.instance.logEvent(AnalyticEvent.HINT_TAKEN, properties: {
+            'hintType': widget.type.name,
+          });
           Navigator.pop(context, widget.type);
         } else {
           setState(() {
@@ -145,6 +152,10 @@ class __HintTypeButtonState extends State<_HintTypeButton> {
             (ad) {
               ad.show(
                 onUserEarnedReward: (ad, reward) {
+                  Analytics.instance
+                      .logEvent(AnalyticEvent.HINT_TAKEN, properties: {
+                    'hintType': widget.type.name,
+                  });
                   Navigator.pop(context, widget.type);
                 },
               );
@@ -153,7 +164,13 @@ class __HintTypeButtonState extends State<_HintTypeButton> {
           setState(() {
             isLoadingAd = false;
           });
-          if (adLoadSuccess) {}
+          if (!adLoadSuccess && context.mounted) {
+            ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+              const SnackBar(
+                content: Text('Could\'nt load Ads at the moment'),
+              ),
+            );
+          }
         }
       },
       style: FilledButton.styleFrom(

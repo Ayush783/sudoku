@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 class SudokuBoardModel {
   final List<List<SudokuCellModel>> cellMatrix;
   SudokuBoardModel({required this.cellMatrix});
@@ -57,6 +60,23 @@ class SudokuBoardModel {
                         .toList(),
                   )
                   .toList());
+
+  String get id {
+    final boardAsString = cellMatrix
+        .map(
+          (e) => e.map(
+            (e) => e.isEditable ? 0 : e.value,
+          ),
+        )
+        .map(
+          (element) => element.join(''),
+        )
+        .join('');
+    final code = utf8.encode(boardAsString);
+    final uniqueId = base64Url.encode(code);
+    log(uniqueId);
+    return uniqueId;
+  }
 }
 
 class SudokuCellModel {

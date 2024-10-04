@@ -19,7 +19,7 @@ class ShareButton extends StatelessWidget {
               .logEvent(AnalyticEvent.SHARE, properties: {'boardID': boardID});
           ShareController.shareIncompleteBoard(boardID);
         },
-        icon: Assets.icons.whatsapp.image());
+        icon: Assets.icons.whatsapp.image(height: 24));
   }
 }
 

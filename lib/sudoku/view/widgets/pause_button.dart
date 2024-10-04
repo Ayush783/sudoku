@@ -36,7 +36,7 @@ class PauseButton extends StatelessWidget {
         }
       },
       padding: const EdgeInsets.all(4),
-      icon: Assets.icons.pause.image(),
+      icon: Assets.icons.pause.image(height: 24),
       style: IconButton.styleFrom(
         minimumSize: Size.zero,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,

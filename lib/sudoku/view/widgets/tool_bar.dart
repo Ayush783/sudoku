@@ -24,7 +24,7 @@ class ToolBar extends StatelessWidget {
               if (!controller.hasFocussedCell) return;
               controller.updateCell(0);
             },
-            icon: Assets.icons.backspace.image(),
+            icon: Assets.icons.backspace.image(height: 40),
           ),
           const _NoteModeToggleButton(),
           const _HintButton(),
@@ -33,7 +33,7 @@ class ToolBar extends StatelessWidget {
               Analytics.instance.logEvent(AnalyticEvent.UNDO);
               context.read<SudokuController>().undo();
             },
-            icon: Assets.icons.undo.image(),
+            icon: Assets.icons.undo.image(height: 40),
           ),
         ],
       ),
@@ -73,7 +73,7 @@ class _HintButton extends StatelessWidget {
           context.read<SudokuController>().takeHint(hintType);
         }
       },
-      icon: Assets.icons.lightBulb.image(),
+      icon: Assets.icons.lightBulb.image(height: 40),
     );
   }
 }
@@ -96,7 +96,7 @@ class _NoteModeToggleButton extends StatelessWidget {
       icon: Stack(
         clipBehavior: Clip.none,
         children: [
-          Assets.icons.edit.image(),
+          Assets.icons.edit.image(height: 40),
           Positioned(
             bottom: 2,
             left: 22,

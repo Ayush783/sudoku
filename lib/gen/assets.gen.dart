@@ -26,6 +26,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/pause.png
   AssetGenImage get pause => const AssetGenImage('assets/icons/pause.png');
 
+  /// File path: assets/icons/playstore.png
+  AssetGenImage get playstore =>
+      const AssetGenImage('assets/icons/playstore.png');
+
   /// File path: assets/icons/undo.png
   AssetGenImage get undo => const AssetGenImage('assets/icons/undo.png');
 
@@ -35,7 +39,7 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<AssetGenImage> get values =>
-      [backspace, edit, lightBulb, pause, undo, whatsapp];
+      [backspace, edit, lightBulb, pause, playstore, undo, whatsapp];
 }
 
 class Assets {

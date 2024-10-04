@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sudoku/sudoku/data/model/sudoku_model.dart';
@@ -48,7 +50,9 @@ class _SudokuBoardCellState extends State<SudokuBoardCell> {
               cell.colIndex < focussedBlockStartColumn + 3);
     });
 
-    final cellSize = (MediaQuery.sizeOf(context).width - 32) / 9;
+    final cellSize = kIsWeb
+        ? _getSize(MediaQuery.sizeOf(context)) / 9
+        : (MediaQuery.sizeOf(context).width - 32) / 9;
     final lastEnteredValue = context
         .select<SudokuController, int>((value) => value.lastEnteredValue);
     final isPaused =
@@ -123,6 +127,14 @@ class _SudokuBoardCellState extends State<SudokuBoardCell> {
 
     return String.fromCharCode(randomRange + randomOffset);
   }
+
+  double _getSize(Size screenSize) => switch (screenSize.width) {
+        > 1200 => screenSize.width * 0.25,
+        > 960 => screenSize.width * 0.3,
+        > 840 => screenSize.width * 0.4,
+        > 480 => screenSize.width * 0.5,
+        _ => screenSize.width * 0.6,
+      };
 }
 
 class _NotesGridBuilder extends StatelessWidget {

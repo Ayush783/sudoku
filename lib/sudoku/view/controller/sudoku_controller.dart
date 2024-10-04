@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'dart:developer' as dev;
 
@@ -367,5 +368,36 @@ class SudokuController extends ChangeNotifier {
       'boardID': _board!.id,
     });
     _gameTimer?.cancel();
+  }
+
+  void generateSudokuFromID(String id) {
+    final boardFromID = _retrieveBoardFromID(id);
+    _solvedBoard = SudokuBoardModel.fromData(boardFromID);
+    _board = SudokuBoardModel.fromData(boardFromID);
+    startTimer(reset: true);
+    _hintTypeCounter = {HintType.cell: 3, HintType.row: 2, HintType.block: 1};
+
+    Analytics.instance.logEvent(AnalyticEvent.NEW_GAME, properties: {
+      'boardID': _board!.id,
+    });
+
+    notifyListeners();
+  }
+
+  List<List<int>> _retrieveBoardFromID(String id) {
+    final code = base64Url.decode(id);
+    final boardData = utf8.decode(code);
+    List<List<int>> retrievedCellMatrix = [];
+
+    for (int i = 0; i < 9; i++) {
+      retrievedCellMatrix.add([]);
+      for (int j = 0; j < 9; j++) {
+        retrievedCellMatrix[i].add(
+          int.parse(boardData[i * 9 + j]),
+        );
+      }
+    }
+
+    return retrievedCellMatrix;
   }
 }

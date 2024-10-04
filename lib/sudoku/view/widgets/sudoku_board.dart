@@ -82,6 +82,8 @@ class SudokuBoard extends StatelessWidget {
               const SudokuNativeAd(),
             ],
           )
-        : const SizedBox.shrink();
+        : const Center(
+            child: CircularProgressIndicator(),
+          );
   }
 }

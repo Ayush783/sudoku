@@ -61,6 +61,23 @@ class SudokuBoardModel {
                   )
                   .toList());
 
+  // factory SudokuBoardModel.fromID(String id) {
+  //   final code = base64Url.decode(id);
+  //   final boardData = utf8.decode(code);
+  //   List<List<int>> retrievedCellMatrix = [];
+
+  //   for (int i = 0; i < 9; i++) {
+  //     retrievedCellMatrix.add([]);
+  //     for (int j = 0; j < 9; j++) {
+  //       retrievedCellMatrix[i].add(
+  //         int.parse(boardData[i * 9 + j]),
+  //       );
+  //     }
+  //   }
+
+  //   return SudokuBoardModel.fromData(retrievedCellMatrix);
+  // }
+
   String get id {
     final boardAsString = cellMatrix
         .map(

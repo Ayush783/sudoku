@@ -13,8 +13,17 @@
                     "projectId": "sudoku-aayushsharma",
                     "configurations": {
                         "android": "1:1023622084657:android:5d104d1aa337bf3d2efd10",
+                        "ios": "1:1023622084657:ios:dd0c48826b0c53522efd10",
                         "web": "1:1023622084657:web:d895ee1fcc00711d2efd10"
                     }
+                }
+            },
+            "ios": {
+                "default": {
+                    "projectId": "sudoku-aayushsharma",
+                    "appId": "1:1023622084657:ios:dd0c48826b0c53522efd10",
+                    "uploadDebugSymbols": true,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
                 }
             }
         }

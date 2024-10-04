@@ -5,20 +5,43 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "sudoku",
+            "name": "sudoku-app",
             "request": "launch",
+            "program": "lib/main.dart",
             "type": "dart"
         },
         {
-            "name": "sudoku (profile mode)",
+            "name": "sudoku-app (profile mode)",
             "request": "launch",
             "type": "dart",
+            "program": "lib/main.dart",
             "flutterMode": "profile"
         },
         {
-            "name": "sudoku (release mode)",
+            "name": "sudoku-app (release mode)",
             "request": "launch",
             "type": "dart",
+            "program": "lib/main.dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "sudoku-web",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_web.dart"
+        },
+        {
+            "name": "sudoku-web (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_web.dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "sudoku-web (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_web.dart",
             "flutterMode": "release"
         }
     ]

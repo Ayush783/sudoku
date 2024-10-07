@@ -6,6 +6,7 @@ import 'package:sudoku/gen/assets.gen.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 import 'package:sudoku/sudoku/view/painter/sudoku_board_painter.dart';
 import 'package:sudoku/sudoku/view/widgets/sudoku_board_cell.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SudokuWebLandingPage extends StatefulWidget {
   const SudokuWebLandingPage({super.key});
@@ -67,14 +68,25 @@ class _SudokuWebLandingPageState extends State<SudokuWebLandingPage> {
               ),
               const SizedBox(height: 24),
               IconButton.filled(
-                  onPressed: () {},
-                  color: Color.fromARGB(50, Random().nextInt(150) + 55,
-                      Random().nextInt(150) + 55, Random().nextInt(150) + 55),
+                  onPressed: () async {
+                    if (await canLaunchUrl(Uri.parse(
+                        'https://play.google.com/apps/test/aayushsharma.me.sudoku/2'))) {
+                      launchUrl(Uri.parse(
+                          'https://play.google.com/apps/test/aayushsharma.me.sudoku/2'));
+                    }
+                  },
+                  color: Colors.black.withOpacity(0.7),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                   icon: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text('Get it on Google Play'),
-                      Assets.icons.playstore.image(height: 24),
+                      const Text(
+                        'Get it on Google Play',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Assets.icons.playstore
+                          .image(height: 24, color: Colors.white),
                     ],
                   ))
             ],

@@ -97,7 +97,7 @@ class SudokuController extends ChangeNotifier {
     _hintTypeCounter = {HintType.cell: 3, HintType.row: 2, HintType.block: 1};
 
     Analytics.instance.logEvent(AnalyticEvent.NEW_GAME,
-        properties: {'boardID': _board!.id, 'isWeb': kIsWeb});
+        properties: {'boardID': _board!.id, 'isWeb': kIsWeb.toString()});
 
     notifyListeners();
   }

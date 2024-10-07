@@ -60184,7 +60184,7 @@ r.a=A.aej(q)
 r.LL(!0)
 A.av([B.ya,3,B.yb,2,B.yc,1],t.eE,t.S)
 $.ah7()
-s=A.av(["boardID",r.a.ga0F(),"isWeb",!0],t.N,t.K)
+s=A.av(["boardID",r.a.ga0F(),"isWeb",String(!0)],t.N,t.K)
 $.ahl().ru("NEW_GAME",s)
 r.ab()
 return r},

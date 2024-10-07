@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:developer' as dev;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sudoku/analytics/analytics.dart';
 import 'package:sudoku/sudoku/data/model/sudoku_model.dart';
@@ -95,9 +96,8 @@ class SudokuController extends ChangeNotifier {
     startTimer(reset: true);
     _hintTypeCounter = {HintType.cell: 3, HintType.row: 2, HintType.block: 1};
 
-    Analytics.instance.logEvent(AnalyticEvent.NEW_GAME, properties: {
-      'boardID': _board!.id,
-    });
+    Analytics.instance.logEvent(AnalyticEvent.NEW_GAME,
+        properties: {'boardID': _board!.id, 'isWeb': kIsWeb});
 
     notifyListeners();
   }
@@ -179,12 +179,13 @@ class SudokuController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _solveFor(int row, int col) {
+  int _solveFor(int row, int col) {
     _board = _board!.update(_solvedBoard!.cellMatrix[row][col].value, row, col);
+    return _solvedBoard!.cellMatrix[row][col].value;
   }
 
   // Reveal a single random cell
-  void _fillSingleCell() {
+  ({int row, int col, int val})? _fillSingleCell() {
     List<List<int>> emptyCells = [];
 
     for (int i = 0; i < 9; i++) {
@@ -199,9 +200,11 @@ class SudokuController extends ChangeNotifier {
       var randomCell = emptyCells[Random().nextInt(emptyCells.length)];
       int row = randomCell[0];
       int col = randomCell[1];
-      _solveFor(row, col);
+      int val = _solveFor(row, col);
+      return (row: row, col: col, val: val);
     } else {
       dev.log("No empty cells to reveal", name: _logName);
+      return null;
     }
   }
 
@@ -399,5 +402,27 @@ class SudokuController extends ChangeNotifier {
     }
 
     return retrievedCellMatrix;
+  }
+
+  /// Only to be called for web, Gives a unique animation to the web app
+  void playAutomatically() async {
+    assert(kIsWeb);
+
+    Timer.periodic(
+      const Duration(seconds: 2),
+      (timer) {
+        if (_board!.isCompleted) {
+          timer.cancel();
+        }
+
+        final ({int row, int col, int val})? cell = _fillSingleCell();
+        if (cell != null) {
+          _focussedRow = cell.row;
+          _focussedColumn = cell.col;
+          _lastEnteredValue = cell.val;
+          notifyListeners();
+        }
+      },
+    );
   }
 }

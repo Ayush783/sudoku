@@ -7,12 +7,27 @@ import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 import 'package:sudoku/sudoku/view/painter/sudoku_board_painter.dart';
 import 'package:sudoku/sudoku/view/widgets/sudoku_board_cell.dart';
 
-class SudokuWebLandingPage extends StatelessWidget {
+class SudokuWebLandingPage extends StatefulWidget {
   const SudokuWebLandingPage({super.key});
 
   @override
+  State<SudokuWebLandingPage> createState() => _SudokuWebLandingPageState();
+}
+
+class _SudokuWebLandingPageState extends State<SudokuWebLandingPage> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        context.read<SudokuController>().playAutomatically();
+      },
+    );
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final board = context.read<SudokuController>().board!;
+    final board = context.watch<SudokuController>().board!;
     final size = MediaQuery.sizeOf(context);
     return Scaffold(
       body: Center(

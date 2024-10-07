@@ -129,10 +129,10 @@ class _SudokuBoardCellState extends State<SudokuBoardCell> {
 
   double _getSize(Size screenSize) => switch (screenSize.width) {
         > 1200 => screenSize.width * 0.25,
-        > 960 => screenSize.width * 0.3,
-        > 840 => screenSize.width * 0.4,
-        > 480 => screenSize.width * 0.5,
-        _ => screenSize.width * 0.6,
+        > 960 => screenSize.width * 0.35,
+        > 840 => screenSize.width * 0.45,
+        > 480 => screenSize.width * 0.75,
+        _ => screenSize.width * 0.75,
       };
 }
 

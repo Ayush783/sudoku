@@ -424,9 +424,10 @@ packages:
   google_play_instant:
     dependency: "direct main"
     description:
-      path: "../google_play_instant"
-      relative: true
-    source: path
+      name: google_play_instant
+      sha256: c190c6966af451d70833ad345c1d1c63fa8a68f03133379df29c1a51f0934f7c
+      url: "https://pub.dev"
+    source: hosted
     version: "0.0.1"
   graphs:
     dependency: transitive

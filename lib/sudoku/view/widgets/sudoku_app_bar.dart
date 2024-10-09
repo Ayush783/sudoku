@@ -13,10 +13,14 @@ class SudokuAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final isBoardCompleted = context
         .select<SudokuController, bool>((value) => value.isBoardCompleted);
+    final isBoardInitialized =
+        context.select<SudokuController, bool>((value) => value.board != null);
     return AppBar(
       title: const Text('Sudoku'),
       centerTitle: false,
-      actions: isBoardCompleted ? [] : const [PauseButton(), ShareButton()],
+      actions: isBoardCompleted || !isBoardInitialized
+          ? []
+          : const [PauseButton(), ShareButton()],
     );
   }
 

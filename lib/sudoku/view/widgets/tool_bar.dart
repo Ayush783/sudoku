@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sudoku/ad/service/ad_service.dart';
 import 'package:sudoku/analytics/analytics.dart';
 import 'package:sudoku/gen/assets.gen.dart';
+import 'package:sudoku/in_app_review/controller/in_app_review_controller.dart';
 import 'package:sudoku/sudoku/view/controller/hint_type.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 

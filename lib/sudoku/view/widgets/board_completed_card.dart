@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sudoku/in_app_review/controller/in_app_review_controller.dart';
 import 'package:sudoku/share/controller/share_controller.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 
-class BoardCompletedCard extends StatelessWidget {
+class BoardCompletedCard extends StatefulWidget {
   const BoardCompletedCard({super.key});
+
+  @override
+  State<BoardCompletedCard> createState() => _BoardCompletedCardState();
+}
+
+class _BoardCompletedCardState extends State<BoardCompletedCard> {
+  @override
+  void initState() {
+    InAppReviewController.askForReview(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:sudoku/in_app_review/view/bottomsheets/ask_to_rate_sheet.dart';
 import 'package:sudoku/in_app_review/view/bottomsheets/pre_review_sheet.dart';
 import 'package:sudoku/in_app_review/view/bottomsheets/share_feedback_sheet.dart';
+import 'package:sudoku/services/shared_preference_service.dart';
 
 class InAppReviewController {
   static final inAppReviewInstance = InAppReview.instance;
@@ -17,11 +18,29 @@ class InAppReviewController {
   /// If user likes the app then show the in app review dialog box.
   static void askForReview(BuildContext context) async {
     try {
+      final latestAppReviewTime = await SharedPreferenceService.instance
+          .get<String>(SharedPreferenceKey.LATEST_IN_APP_REVIEW_TIME.name);
+      // Return if already shown recently
+      if (latestAppReviewTime != null &&
+          (DateTime.tryParse(latestAppReviewTime)
+                      ?.difference(DateTime.now())
+                      .inDays
+                      .abs() ??
+                  0) <
+              45) {
+        return;
+      }
+
+      if (!context.mounted) return;
+
       final userLikesTheApp = await showModalBottomSheet<bool>(
         context: context,
         builder: (context) => const PreReviewSheet(),
       );
       if (userLikesTheApp == true) {
+        SharedPreferenceService.instance.set<String>(
+            SharedPreferenceKey.LATEST_IN_APP_REVIEW_TIME.name,
+            DateTime.now().toString());
         if (await inAppReviewInstance.isAvailable()) {
           inAppReviewInstance.requestReview();
         } else {
@@ -37,6 +56,10 @@ class InAppReviewController {
           }
         }
       } else if (userLikesTheApp == false) {
+        // If the user disliked the app we'll prompt him the next day
+        SharedPreferenceService.instance.set<String>(
+            SharedPreferenceKey.LATEST_IN_APP_REVIEW_TIME.name,
+            DateTime.now().add(const Duration(days: -44)).toString());
         if (context.mounted) {
           showModalBottomSheet(
             context: context,

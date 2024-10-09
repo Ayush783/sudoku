@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:sudoku/analytics/analytics.dart';
 import 'package:sudoku/app_links/service/app_links_service.dart';
+import 'package:sudoku/services/shared_preference_service.dart';
 import 'package:sudoku/sudoku/view/screens/sudoku_app.dart';
 
 void main() async {
@@ -25,6 +26,8 @@ void main() async {
   MobileAds.instance.initialize();
 
   await Analytics.instance.setDefaults();
+
+  await SharedPreferenceService.instance.fetchLocalData();
 
   runApp(const SudokuApp());
 }

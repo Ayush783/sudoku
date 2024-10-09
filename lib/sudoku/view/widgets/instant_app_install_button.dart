@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_play_instant/google_play_instant.dart';
 import 'package:sudoku/gen/assets.gen.dart';
 

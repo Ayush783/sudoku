@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sudoku/ad/widgets/sudoku_native_ad.dart';
+import 'package:sudoku/shimmer/view/shimmer_loader.dart';
 import 'package:sudoku/sudoku/data/model/sudoku_model.dart';
 import 'package:sudoku/sudoku/view/controller/sudoku_controller.dart';
 import 'package:sudoku/sudoku/view/painter/sudoku_board_painter.dart';
@@ -84,8 +85,6 @@ class SudokuBoard extends StatelessWidget {
               const SudokuNativeAd(),
             ],
           )
-        : const Center(
-            child: CircularProgressIndicator(),
-          );
+        : const ShimmerLoader();
   }
 }

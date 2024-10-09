@@ -20,7 +20,7 @@ class MainActivity: FlutterActivity() {
             val action: String? = intent?.action
             if(action == "android.intent.action.VIEW") {
                 Log.d("AppLinks", intent.data.toString())
-                applinksMethodChannel!!.invokeMethod("onAppLinkOpened", intent?.data.toString())
+                applinksMethodChannel.invokeMethod("onAppLinkOpened", intent?.data.toString())
             }
         } catch (e: Exception) {
             Log.d("MainActivity", e.toString())
@@ -33,7 +33,7 @@ class MainActivity: FlutterActivity() {
             val action: String? = intent?.action
             if(action == "android.intent.action.VIEW") {
                 Log.d("AppLinks", intent.data.toString())
-                applinksMethodChannel!!.invokeMethod("onAppLinkOpened", intent?.data.toString())
+                applinksMethodChannel.invokeMethod("onAppLinkOpened", intent?.data.toString())
             }
         } catch (e: Exception) {
             Log.d("MainActivity", e.toString())

@@ -23,12 +23,19 @@ class $AssetsIconsGen {
   AssetGenImage get lightBulb =>
       const AssetGenImage('assets/icons/light-bulb.png');
 
+  /// File path: assets/icons/mingcute_delete-line.png
+  AssetGenImage get mingcuteDeleteLine =>
+      const AssetGenImage('assets/icons/mingcute_delete-line.png');
+
   /// File path: assets/icons/pause.png
   AssetGenImage get pause => const AssetGenImage('assets/icons/pause.png');
 
   /// File path: assets/icons/playstore.png
   AssetGenImage get playstore =>
       const AssetGenImage('assets/icons/playstore.png');
+
+  /// File path: assets/icons/send.png
+  AssetGenImage get send => const AssetGenImage('assets/icons/send.png');
 
   /// File path: assets/icons/undo.png
   AssetGenImage get undo => const AssetGenImage('assets/icons/undo.png');
@@ -38,8 +45,17 @@ class $AssetsIconsGen {
       const AssetGenImage('assets/icons/whatsapp.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [backspace, edit, lightBulb, pause, playstore, undo, whatsapp];
+  List<AssetGenImage> get values => [
+        backspace,
+        edit,
+        lightBulb,
+        mingcuteDeleteLine,
+        pause,
+        playstore,
+        send,
+        undo,
+        whatsapp
+      ];
 }
 
 class Assets {

@@ -3,8 +3,10 @@ description: "A Sudoku game made with Flutter."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-# Version code starts at 50 for installable app, from 3 for instant App
-version: 1.0.1+3
+# Installed app version
+# version: 1.0.1+50
+# Instant APP version
+version: 1.0.1+4
 
 environment:
   sdk: ^3.5.0
@@ -25,6 +27,8 @@ dependencies:
   firebase_messaging: ^15.1.3
   url_launcher: ^6.3.0
   google_play_instant: ^0.0.1
+  in_app_review: ^2.0.9
+  shared_preferences: ^2.3.2
 
 dev_dependencies:
   flutter_test:

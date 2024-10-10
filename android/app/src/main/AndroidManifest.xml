@@ -1,7 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:dist="http://schemas.android.com/apk/distribution">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <dist:module dist:instant="true" />
+
     <application
         android:label="sudoku"
         android:name="${applicationName}"
@@ -35,13 +34,12 @@
 
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" /> 
-                <data
-                    android:scheme="https"
-                    android:host="instantsudoku.in"
-                    android:pathPattern="/.*" />
+                <data android:scheme="https"/>
+                <data android:host="instantsudoku.in"/>
+<!--                While building for instant app comment the below line-->
+<!--                <data android:pathPattern="/.*"/>-->
                 <data android:scheme="http"/>
             </intent-filter>
         </activity>

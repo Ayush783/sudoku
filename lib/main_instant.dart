@@ -11,7 +11,7 @@ import 'package:sudoku/services/shared_preference_service.dart';
 import 'package:sudoku/sudoku/view/screens/sudoku_app.dart';
 
 void main() async {
-  Flavor.set(isInstant: false);
+  Flavor.set(isInstant: true);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 

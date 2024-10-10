@@ -8,20 +8,64 @@
             "name": "sudoku-app",
             "request": "launch",
             "program": "lib/main.dart",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "base"
+            ],
         },
         {
             "name": "sudoku-app (profile mode)",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "args": [
+                "--flavor",
+                "base"
+            ],
         },
         {
             "name": "sudoku-app (release mode)",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
+            "flutterMode": "release",
+            "args": [
+                "--flavor",
+                "base"
+            ],
+        },
+        {
+            "name": "sudoku-instant",
+            "request": "launch",
+            "program": "lib/main_instant.dart",
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "instant"
+            ]
+        },
+        {
+            "name": "sudoku-instant (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "instant"
+            ],
+            "program": "lib/main_instant.dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "sudoku-instant (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "flavor",
+                "instant"
+            ],
+            "program": "lib/main_instant.dart",
             "flutterMode": "release"
         },
         {

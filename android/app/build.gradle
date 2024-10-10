@@ -59,6 +59,23 @@ android {
             signingConfig = signingConfigs.debug
         }
     }
+
+    flavorDimensions "app"
+
+    productFlavors {
+        instant {
+            dimension 'app'
+            versionNameSuffix "-instant"
+            flutter.target "lib/main_instant.dart"
+            signingConfig signingConfigs.release
+        }
+
+        base {
+            dimension "app"
+            flutter.target "lib/main.dart"
+            signingConfig signingConfigs.release
+        }
+    }
 }
 
 flutter {

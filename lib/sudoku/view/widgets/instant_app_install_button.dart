@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_play_instant/google_play_instant.dart';
 import 'package:sudoku/gen/assets.gen.dart';
+import 'package:sudoku/services/google_play_instant_service.dart';
 
 class InstantAppInstallButton extends StatefulWidget {
   const InstantAppInstallButton({super.key});
@@ -11,28 +11,19 @@ class InstantAppInstallButton extends StatefulWidget {
 }
 
 class _InstantAppInstallButtonState extends State<InstantAppInstallButton> {
-  final GooglePlayInstant _playInstant = GooglePlayInstant();
-
-  bool isInstantApp = false;
   @override
   void initState() {
     super.initState();
-    isInstantAppGetter();
-  }
-
-  isInstantAppGetter() async {
-    isInstantApp = (await _playInstant.isInstantApp()) ?? false;
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return isInstantApp
+    return GooglePlayInstantService.instance.isInstantApp
         ? Padding(
             padding: const EdgeInsets.only(bottom: 16),
             child: FilledButton(
               onPressed: () {
-                _playInstant.showInstallPrompt();
+                GooglePlayInstantService.instance.showInstallPrompt();
               },
               child: Row(
                 mainAxisSize: MainAxisSize.min,

@@ -3,6 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sudoku/analytics/analytics.dart';
+import 'package:sudoku/services/google_play_instant_service.dart';
 
 class FirebaseAnalyticsService implements Analytics {
   static final _analyticsInstance = FirebaseAnalytics.instance;
@@ -21,7 +22,8 @@ class FirebaseAnalyticsService implements Analytics {
       'version': appInfo.version,
       'buildNumber': appInfo.buildNumber,
       'deviceId': deviceInfo.id,
-      'fcmToken': fcmToken ?? ''
+      'fcmToken': fcmToken ?? '',
+      'isInstantApp': GooglePlayInstantService.instance.isInstantApp,
     });
   }
 }

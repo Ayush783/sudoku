@@ -40,7 +40,9 @@ class AppLinksService {
   static Future<Uri?> getAppLaunchedArticleId() async {
     try {
       Timer(const Duration(seconds: 3), () {
-        _completer.completeError('Timed out');
+        if (!_completer.isCompleted) {
+          _completer.completeError('Timed out');
+        }
       });
       return await _completer.future;
     } catch (e) {

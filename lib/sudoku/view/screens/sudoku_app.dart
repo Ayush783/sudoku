@@ -21,7 +21,9 @@ class _SudokuAppState extends State<SudokuApp> {
   void initState() {
     AppLinksService.getAppLaunchedArticleId().then(
       (boardLink) {
-        if (boardLink != null) {
+        if (boardLink != null &&
+            boardLink.path.isNotEmpty &&
+            boardLink.path != '/') {
           _sudokuController
               .generateSudokuFromID(boardLink.path.replaceFirst('/', ''));
         } else {

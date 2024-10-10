@@ -23,7 +23,11 @@ class FirebaseAnalyticsService implements Analytics {
       'buildNumber': appInfo.buildNumber,
       'deviceId': deviceInfo.id,
       'fcmToken': fcmToken ?? '',
-      'isInstantApp': GooglePlayInstantService.instance.isInstantApp,
     });
+    await _analyticsInstance.setUserProperty(
+        name: 'app_type',
+        value: GooglePlayInstantService.instance.isInstantApp
+            ? 'INSTANT'
+            : 'INSTALLED');
   }
 }

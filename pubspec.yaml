@@ -4,9 +4,9 @@ description: "A Sudoku game made with Flutter."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # Installed app version
-# version: 1.0.1+50
+version: 1.0.2+51
 # Instant APP version
-version: 1.0.1+5
+# version: 1.0.1+5
 
 environment:
   sdk: ^3.5.0

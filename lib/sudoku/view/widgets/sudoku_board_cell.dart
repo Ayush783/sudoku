@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:developer' as dev;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,8 @@ class _SudokuBoardCellState extends State<SudokuBoardCell> {
         .select<SudokuController, int>((value) => value.lastEnteredValue);
     final isPaused =
         context.select<SudokuController, bool>((value) => value.isPaused);
+
+    dev.log('${MediaQuery.sizeOf(context).height}');
 
     return InkWell(
       onTap: cell.isEditable

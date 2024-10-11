@@ -68,9 +68,9 @@ class _SudokuWebLandingPageState extends State<SudokuWebLandingPage> {
               IconButton.filled(
                   onPressed: () async {
                     if (await canLaunchUrl(Uri.parse(
-                        'https://play.google.com/apps/test/aayushsharma.me.sudoku/2'))) {
+                        'https://play.google.com/store/apps/details?id=aayushsharma.me.sudoku'))) {
                       launchUrl(Uri.parse(
-                          'https://play.google.com/apps/test/aayushsharma.me.sudoku/2'));
+                          'https://play.google.com/store/apps/details?id=aayushsharma.me.sudoku'));
                     }
                   },
                   color: Colors.black.withOpacity(0.7),
